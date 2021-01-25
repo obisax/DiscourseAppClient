@@ -69,14 +69,16 @@ class AddTopicViewController: UIViewController {
         viewModel.submitButtonTapped(title: text)
     }
 
-    fileprivate func showErrorAddingTopicAlert() {
+    fileprivate func showErrorAddingTopicAlert(_ errorMessage:String) {
         let message = NSLocalizedString("Error adding topic\nPlease try again later", comment: "")
         showAlert(message)
     }
+    
 }
 
 extension AddTopicViewController: AddTopicViewDelegate {
-    func errorAddingTopic() {
-        showErrorAddingTopicAlert()
+   
+    func errorAddingTopic(errorMessage:String) {
+        showErrorAddingTopicAlert(errorMessage)
     }
 }

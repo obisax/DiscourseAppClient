@@ -8,18 +8,29 @@
 
 import Foundation
 
-struct CategoriesResponse: Decodable {
-    let categories: Categories
-    
+struct CategoriesResponse: Codable {
+    let categoryList: CategoryList?
+
     enum CodingKeys: String, CodingKey {
-        case categoriesRoot = "category_list"
+        case categoryList = "category_list"
+    }
+}
+
+// MARK: - CategoryList
+struct CategoryList: Codable {
+    let categories: [Category]?
+
+    enum CodingKeys: String, CodingKey {
         case categories
     }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let rootCategories = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .categoriesRoot)
-        
-        categories = try rootCategories.decode(Categories.self, forKey: .categories)
+}
+
+// MARK: - Category
+struct Category: Codable {
+    let id: Int?
+    let name: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id, name
     }
 }

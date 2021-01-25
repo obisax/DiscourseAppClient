@@ -43,8 +43,10 @@ class UsersViewModel {
             
             switch result {
             case .success(let usersResp):
-                guard let users = usersResp?.users else { return }
-                self.usersViewModels = users.map { UserCellViewModel(user:$0) }
+                guard let users = usersResp?.directoryItems else { return }
+                self.usersViewModels = users.map ({ directoryItems -> UserCellViewModel in
+                    return UserCellViewModel(user: directoryItems.user)
+                })
                 
                 self.viewDelegate?.usersFetched()
                 

@@ -16,8 +16,8 @@ struct DiscourseAPIError: Codable {
 
 
 enum SessionAPIError: Error {
-    case httpError(Int)
-    case apiError(DiscourseAPIError)
+    case emptyData
+   
 }
 
 /// Clase de utilidad para llamar al API. El método Send recibe una Request que implementa APIRequest y tiene un tipo Response asociado
@@ -33,9 +33,7 @@ final class SessionAPI {
         let request = request.requestWithBaseUrl()
         
         let task = session.dataTask(with: request) { data, response, error in
-            /*
-             Si hay un error con el dataTask, retornamos error
-             */
+            
             if let error = error {
                 DispatchQueue.main.async {
                     completion(.failure(error))
@@ -43,9 +41,6 @@ final class SessionAPI {
                 return
             }
             
-            /*
-             Si el servidor devuelve error (del 400 al 599), decodificar el error y lo devolvemos
-             */
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode >= 400, let data = data {
                 do {
                     let serverError = try JSONDecoder().decode(DiscourseAPIError.self, from: data)

@@ -8,11 +8,23 @@
 
 import Foundation
 
-struct UserDetailResponse: Decodable {
-    let user: User
-    
-    init(from decoder: Decoder) throws {
-        let rootObject = try decoder.singleValueContainer()
-        user = try rootObject.decode(User.self)
+struct UserDetailResponse: Codable {
+    let user: PurpleUser?
+
+    enum CodingKeys: String, CodingKey {
+        case user
+    }
+}
+
+struct PurpleUser: Codable {
+    let id: Int?
+    let username, name, avatarTemplate, email: String?
+    let canEditName: Bool?
+
+    enum CodingKeys: String, CodingKey {
+        case id, username, name
+        case avatarTemplate = "avatar_template"
+        case email
+        case canEditName = "can_edit_name"
     }
 }

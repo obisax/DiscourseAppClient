@@ -18,7 +18,7 @@ enum Method: String {
 }
 
 protocol APIRequest {
-    associatedtype Response: Decodable
+    associatedtype Response: Codable
     var method: Method { get }
     var path: String { get }
     var parameters: [String: String] { get }
@@ -37,15 +37,9 @@ extension APIRequest {
     }
     
     func requestWithBaseUrl() -> URLRequest {
-        /*
-         *
-         si hay parametros en la url añadimos el {parametro} y ya hace todo automáticamente no? luego haríamos paramters : { return ["parametro": "parametro"]}
-         */
-        // Primero, definimos cual va a ser la url con el recurso a llamar
+
         let url = baseURL.appendingPathComponent(path)
-        // Aquí tendriamos: https://www.google.com/search
         
-        // Segundo, si el objeto que lo implementa añade parametros, construimos la url con parametros
         guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
             fatalError("Not able to create components")
         }

@@ -35,20 +35,14 @@ class TopicsViewModel {
         fetchTopics()
     }
     
-    func refreshTopic() {
-        fetchTopics()
-    }
-    
-    
     private func fetchTopics() {
         topicsDataManager.fetchAllTopics{ [weak self] result in
             guard let self = self else { return}
             
             switch result {
             case .success(let topicResp):
-                guard let topics = topicResp?.topics else { return }
-                self.topicViewModels = topics.map { TopicCellViewModel(topic: $0) }
-                
+                guard let topics = topicResp?.topicList?.topics else { return }
+                self.topicViewModels = topics.map({topic -> TopicCellViewModel in return TopicCellViewModel(topic: topic)})
                 
                 self.viewDelegate?.topicsFetched()
                 
@@ -82,12 +76,16 @@ class TopicsViewModel {
     }
 
     func newTopicWasCreated() {
-        topicViewModels.removeAll()
+    
         fetchTopics()
-        
+       
+    }
+    func refreshTopics() {
+        fetchTopics()
     }
     
     func topicWasDeleted() {
-        refreshTopic()
+    
+        fetchTopics()
     }
 }

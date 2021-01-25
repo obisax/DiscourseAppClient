@@ -46,7 +46,9 @@ class UserDetailViewModel {
             case .success(let userResp):
                 guard let user = userResp?.user else { return }
                 
-                self.labelUserIDText = "\(user.id)"
+                if let userIDlabel = userResp?.user?.id{
+                    self.labelUserIDText = String(userIDlabel)
+                }
                 self.labelUserNameText = user.username
                 self.labelEmailText = user.email
                 self.labelNameText = user.name

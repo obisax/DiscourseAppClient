@@ -42,13 +42,21 @@ class TopicDetailViewModel {
             guard let self = self else { return}
             switch result {
             case .success(let topicResp):
-                guard let topic = topicResp?.topic,let details = topicResp?.details else { return }
-                self.labelTopicIDText = "\(topic.id)"
-                self.labelTopicNameText = topic.title
-                self.postsNumberLabelText = "\(topic.postsCount)"
                 
-                self.canDeleteTopic = details.canDelete ?? false
-                
+                if let topiclabelID = topicResp?.id{
+                    self.labelTopicIDText = String(topiclabelID)
+                }
+                self.labelTopicNameText = topicResp?.fancyTitle
+                if let topicNumberPostsLabel = topicResp?.postsCount{
+                    self.postsNumberLabelText = String(topicNumberPostsLabel)
+                }
+
+                if let topicCanDelete = topicResp?.details?.canDelete{
+                    self.canDeleteTopic = topicCanDelete
+                }else {
+                    self.canDeleteTopic = false
+
+                }
                 self.viewDelegate?.topicDetailFetched()
             case .failure(let error):
                 print(error)

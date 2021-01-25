@@ -13,11 +13,11 @@ class TopicCellViewModel {
    
     let topic: Topic
     var textLabelText: String?
-    var postsCount: String?
+   
     
     init(topic: Topic) {
         self.topic = topic
         self.textLabelText = topic.title
-        self.postsCount = "\(topic.postsCount)"
+        
     }
 }

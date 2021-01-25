@@ -194,19 +194,6 @@ class UserDetailViewController: UIViewController {
         editedName = textField.text
     }
     
-    @objc private func saveNameAdvice() {
-        let yesAction = UIAlertAction(title: "Update", style: .default, handler: { [weak self] _ in
-            self?.updateButtonTapped()
-        })
-        
-        let noAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        let alert = UIAlertController(title: "Are you sure to update user name?", message: "", preferredStyle: .alert)
-        alert.addAction(noAction)
-        alert.addAction(yesAction)
-        
-        self.present(alert, animated: true)
-    }
-    
  
     @objc func updateButtonTapped() {
            guard let editedName = editedName, !editedName.isEmpty, editedName != viewModel.labelNameText else { return }

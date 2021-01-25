@@ -3,25 +3,116 @@ import Foundation
 // TODO: Implementar aquí el modelo de la respuesta.
 // Puedes echar un vistazo en https://docs.discourse.org
 
-struct LatestTopicsResponse: Decodable {
-    let topics: Topics
-    let users: Users
-    let nextPage: String?
+struct LatestTopicsResponse: Codable {
+    let users: [User]?
+    let topicList: TopicList?
+
+    enum CodingKeys: String, CodingKey {
+        case users
+        case topicList = "topic_list"
+    }
+}
+
+// MARK: - TopicList
+struct TopicList: Codable {
+
+    let topics: [Topic]?
+
+    enum CodingKeys: String, CodingKey {
+        case topics
+    }
+}
+
+// MARK: - Topic
+struct Topic: Codable {
+    let id: Int?
+    let title, fancyTitle, slug: String?
+    let postsCount, replyCount, highestPostNumber: Int?
+    let imageURL: String?
+    let createdAt, lastPostedAt: String?
+    let bumped: Bool?
+    let bumpedAt: String?
+    let unseen, pinned: Bool?
+    let excerpt: String?
+    let visible, closed, archived: Bool?
+    let bookmarked, liked: Bool?
+    let views, likeCount: Int?
+    let hasSummary: Bool?
+    let archetype: Archetype?
+    let lastPosterUsername: String?
+    let categoryID: Int?
+    let pinnedGlobally: Bool?
+    let posters: [Poster]?
+    let lastReadPostNumber: Int?
+    let unread, newPosts, notificationLevel: Int?
+    let bookmarkedPostNumbers: [Int]?
+
+    enum CodingKeys: String, CodingKey {
+        case id, title
+        case fancyTitle = "fancy_title"
+        case slug
+        case postsCount = "posts_count"
+        case replyCount = "reply_count"
+        case highestPostNumber = "highest_post_number"
+        case imageURL = "image_url"
+        case createdAt = "created_at"
+        case lastPostedAt = "last_posted_at"
+        case bumped
+        case bumpedAt = "bumped_at"
+        case unseen, pinned, excerpt, visible, closed, archived, bookmarked, liked, views
+        case likeCount = "like_count"
+        case hasSummary = "has_summary"
+        case archetype
+        case lastPosterUsername = "last_poster_username"
+        case categoryID = "category_id"
+        case pinnedGlobally = "pinned_globally"
+        case posters
+        case lastReadPostNumber = "last_read_post_number"
+        case unread
+        case newPosts = "new_posts"
+        case notificationLevel = "notification_level"
+        case bookmarkedPostNumbers = "bookmarked_post_numbers"
+    }
+}
+
+enum Archetype: String, Codable {
+    case regular = "regular"
+}
+
+// MARK: - Poster
+struct Poster: Codable {
+    let extras: Extras?
+    let posterDescription: Description?
+    let userID: Int?
+
+    enum CodingKeys: String, CodingKey {
+        case extras
+        case posterDescription = "description"
+        case userID = "user_id"
+    }
+}
+
+enum Extras: String, Codable {
+    case latest = "latest"
+    case latestSingle = "latest single"
+}
+
+enum Description: String, Codable {
+    case frequentPoster = "Frequent Poster"
+    case mostRecentPoster = "Most Recent Poster"
+    case originalPoster = "Original Poster"
+    case originalPosterMostRecentPoster = "Original Poster, Most Recent Poster"
+}
+
+// MARK: - User
+struct User: Codable {
+    let id: Int?
+    let username, name, avatarTemplate: String?
+    let title: String?
     
     enum CodingKeys: String, CodingKey {
-        case topicsRoot = "topic_list"
-        case topics, users
-        case nextPage = "more_topics_url"
-    }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        users = try container.decode(Users.self, forKey: .users)
-
-        let rootTopics = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .topicsRoot)
-        topics = try rootTopics.decode(Topics.self, forKey: .topics)
-        
-        let nextPageString = try rootTopics.decodeIfPresent(String.self, forKey: .nextPage)
-        nextPage = nextPageString?.replacingOccurrences(of: "/latest", with: "/latest.json")
+        case id, username, name
+        case avatarTemplate = "avatar_template"
+        case title
     }
 }

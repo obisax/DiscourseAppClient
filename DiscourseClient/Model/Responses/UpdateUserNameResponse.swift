@@ -8,4 +8,4 @@
 
 import Foundation
 
-struct UpdateUserNameResponse: Decodable {}
+struct UpdateUserNameResponse: Codable {}

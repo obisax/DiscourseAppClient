@@ -16,7 +16,7 @@ protocol AddTopicCoordinatorDelegate: class {
 
 /// Delegate para comunicar a la vista aspectos relacionados con UI
 protocol AddTopicViewDelegate: class {
-    func errorAddingTopic()
+    func errorAddingTopic(errorMessage: String)
 }
 
 class AddTopicViewModel {
@@ -34,19 +34,20 @@ class AddTopicViewModel {
     }
 
     func submitButtonTapped(title: String) {
+       
+        let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+        let createdAt = dateFormatter.string(from: Date())
     
-        dataManager.addTopic(title: title){ [weak self] result in
+        dataManager.addTopic(title: title,raw: title, createdAt: createdAt){ [weak self] result in
             guard let self = self else { return }
             
             switch result  {
-            case .success (let result):
-                guard let result = result else {return}
-                if result.id != 0{
+            case .success:
                 self.coordinatorDelegate?.topicSuccessfullyAdded()
-                }
             case .failure(let error):
                 print(error)
-                self.viewDelegate?.errorAddingTopic()
+                self.viewDelegate?.errorAddingTopic(errorMessage: error.localizedDescription)
             }
         }
     }
