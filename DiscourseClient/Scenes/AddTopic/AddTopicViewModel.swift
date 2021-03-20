@@ -34,20 +34,18 @@ class AddTopicViewModel {
     }
 
     func submitButtonTapped(title: String) {
-       
         let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.dateFormat = "yyyy-MM-dd"
         let createdAt = dateFormatter.string(from: Date())
     
-        dataManager.addTopic(title: title,raw: title, createdAt: createdAt){ [weak self] result in
-            guard let self = self else { return }
-            
+        dataManager.addTopic(title: title,raw: "This is the body of the topic.", createdAt: createdAt){ [weak self] (result) in
+          
             switch result  {
             case .success:
-                self.coordinatorDelegate?.topicSuccessfullyAdded()
+                self?.coordinatorDelegate?.topicSuccessfullyAdded()
             case .failure(let error):
                 print(error)
-                self.viewDelegate?.errorAddingTopic(errorMessage: error.localizedDescription)
+                self?.viewDelegate?.errorAddingTopic(errorMessage: error.localizedDescription)
             }
         }
     }

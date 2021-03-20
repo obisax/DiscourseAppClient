@@ -42,7 +42,7 @@ class TopicsCoordinator: Coordinator {
 
 extension TopicsCoordinator: TopicsCoordinatorDelegate {
     func didSelect(topic: Topic) {
-        let topicDetailViewModel = TopicDetailViewModel(topicID: topic.id!, topicDetailDataManager: topicDetailDataManager)
+        let topicDetailViewModel = TopicDetailViewModel(topicID: topic.id, topicDetailDataManager: topicDetailDataManager)
         let topicDetailViewController = TopicDetailViewController(viewModel: topicDetailViewModel)
         topicDetailViewController.title = NSLocalizedString("Detail Topic", comment: "")
         topicDetailViewModel.coordinatorDelegate = self

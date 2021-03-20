@@ -21,8 +21,7 @@ class TopicsViewController: UIViewController {
         table.rowHeight = UITableView.automaticDimension
         return table
     }()
-    var refreshControl = UIRefreshControl()
-
+    
     let viewModel: TopicsViewModel
 
     init(viewModel: TopicsViewModel) {
@@ -50,11 +49,6 @@ class TopicsViewController: UIViewController {
         let rightBarButtonItem: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(plusButtonTapped))
         rightBarButtonItem.tintColor = .black
         navigationItem.rightBarButtonItem = rightBarButtonItem
-        
-        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        
-        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        tableView.addSubview(refreshControl)
     }
 
     override func viewDidLoad() {
@@ -66,9 +60,6 @@ class TopicsViewController: UIViewController {
         viewModel.plusButtonTapped()
     }
     
-    @objc func refresh() {
-        viewModel.refreshTopics()
-    }
 
     fileprivate func showErrorFetchingTopicsAlert() {
         let alertMessage: String = NSLocalizedString("Error fetching topics\nPlease try again later", comment: "")
@@ -110,10 +101,6 @@ extension TopicsViewController: TopicsViewDelegate {
 
     func errorFetchingTopics() {
         showErrorFetchingTopicsAlert()
-    }
-    
-    func finishRefresing() {
-        refreshControl.endRefreshing()
     }
 
 }

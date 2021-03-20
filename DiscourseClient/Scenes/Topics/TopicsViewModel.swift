@@ -31,28 +31,25 @@ class TopicsViewModel {
         self.topicsDataManager = topicsDataManager
     }
 
-    func viewWasLoaded() {
-        fetchTopics()
-    }
+  
     
-    private func fetchTopics() {
-        topicsDataManager.fetchAllTopics{ [weak self] result in
-            guard let self = self else { return}
-            
+    fileprivate func fetchTopicsAndReloadUI() {
+        topicsDataManager.fetchAllTopics { [weak self] (result) in
             switch result {
-            case .success(let topicResp):
-                guard let topics = topicResp?.topicList?.topics else { return }
-                self.topicViewModels = topics.map({topic -> TopicCellViewModel in return TopicCellViewModel(topic: topic)})
-                
-                self.viewDelegate?.topicsFetched()
-                
-            case .failure(let error):
-                print(error)
-                self.viewDelegate?.errorFetchingTopics()
+            case .success(let response):
+                guard let response = response else { return }
+
+                self?.topicViewModels = response.topicList.topics.map({ TopicCellViewModel(topic: $0) })
+                self?.viewDelegate?.topicsFetched()
+            case .failure:
+                self?.viewDelegate?.errorFetchingTopics()
             }
         }
     }
-
+    
+    func viewWasLoaded() {
+        fetchTopicsAndReloadUI()
+    }
     func numberOfSections() -> Int {
         return 1
     }
@@ -76,16 +73,12 @@ class TopicsViewModel {
     }
 
     func newTopicWasCreated() {
-    
-        fetchTopics()
+        fetchTopicsAndReloadUI()
        
-    }
-    func refreshTopics() {
-        fetchTopics()
     }
     
     func topicWasDeleted() {
     
-        fetchTopics()
+        fetchTopicsAndReloadUI()
     }
 }

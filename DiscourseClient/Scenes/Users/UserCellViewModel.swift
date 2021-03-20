@@ -29,7 +29,7 @@ class UserCellViewModel {
         self.user = user
         self.textLabelText = user.name ?? user.username
         
-        let avatarUrl: String = user.avatarTemplate!.replacingOccurrences(of: "{size}", with: "\(UserCellViewModel.imageSize)")
+        let avatarUrl: String = user.avatarTemplate.replacingOccurrences(of: "{size}", with: "\(UserCellViewModel.imageSize)")
         if let imageUrl = URL(string: "\(apiURL)\(avatarUrl)") {
             DispatchQueue.global(qos: .userInitiated).async { [weak self] in
                 guard let data = try? Data(contentsOf: imageUrl),

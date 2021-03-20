@@ -36,7 +36,7 @@ class UsersCoordinator: Coordinator {
 
 extension UsersCoordinator: UsersCoordinatorDelegate {
     func didSelect(user: User) {
-        let userDetailViewModel = UserDetailViewModel(username: user.username! , userDetailDataManager: userDetailDataManager)
+        let userDetailViewModel = UserDetailViewModel(username: user.username , userDetailDataManager: userDetailDataManager)
         let userDetailViewController = UserDetailViewController(viewModel: userDetailViewModel)
         userDetailViewModel.coordinatorDelegate = self
         userDetailViewModel.viewDelegate = userDetailViewController
