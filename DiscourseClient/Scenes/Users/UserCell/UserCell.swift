@@ -8,14 +8,16 @@
 
 import UIKit
 
-class UserCell: UITableViewCell {
+class UserCell: UICollectionViewCell {
     
     @IBOutlet weak private var avatarImage: UIImageView!
     @IBOutlet weak private var nameLabel: UILabel!
     
     var viewModel : UserCellViewModel?{
+        
         didSet{
             guard let viewModel = viewModel else {return}
+            viewModel.delegate = self
             avatarImage.image = viewModel.avatarImage
             nameLabel.text = viewModel.textLabelText
         }
@@ -37,7 +39,7 @@ class UserCell: UITableViewCell {
         avatarImage.layer.cornerRadius = avatarImage.frame.height / 2
         avatarImage.layer.masksToBounds = true
         
-        nameLabel.font = UIFont.systemFont(ofSize: 19, weight: .semibold)
+        nameLabel.font = UIFont.avatar
     }
     
     private func showImage(_ image: UIImage?) {
@@ -53,8 +55,7 @@ class UserCell: UITableViewCell {
 extension UserCell: UserCellViewModelDelegate {
     
     func userImageFetched() {
-        guard let image = viewModel?.avatarImage else { return }
-        
-        showImage(image)
+        avatarImage.image = viewModel?.avatarImage
+        setNeedsLayout()
     }
 }

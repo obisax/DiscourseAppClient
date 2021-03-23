@@ -16,9 +16,10 @@ protocol UserCellViewModelDelegate: class {
 class UserCellViewModel {
     static let imageSize = 100
     let user: User
-    var textLabelText: String?
+    
     
     weak var delegate: UserCellViewModelDelegate?
+    var textLabelText: String?
     var avatarImage: UIImage? {
         didSet {
             delegate?.userImageFetched()

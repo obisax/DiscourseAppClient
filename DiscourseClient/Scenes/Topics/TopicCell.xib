@@ -105,6 +105,13 @@
                     <constraint firstAttribute="bottom" secondItem="iwl-qO-JV4" secondAttribute="bottom" constant="16" id="o6R-Kj-PLj"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="commentCountLabel" destination="9sD-eg-Km6" id="abp-fq-wOT"/>
+                <outlet property="imagePost" destination="a2g-es-VSj" id="M32-mP-3sb"/>
+                <outlet property="postDateLabel" destination="Tzu-W2-0wr" id="gui-HW-ISA"/>
+                <outlet property="topicTitleLabel" destination="b5x-BF-V7l" id="MRU-Aw-XaW"/>
+                <outlet property="viewCountLabel" destination="Wyf-ak-D5L" id="hKc-Mb-sbh"/>
+            </connections>
             <point key="canvasLocation" x="60.869565217391312" y="95.089285714285708"/>
         </tableViewCell>
     </objects>

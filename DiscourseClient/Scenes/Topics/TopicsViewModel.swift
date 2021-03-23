@@ -31,20 +31,26 @@ class TopicsViewModel {
         self.topicsDataManager = topicsDataManager
     }
 
-  
     
     fileprivate func fetchTopicsAndReloadUI() {
-        topicsDataManager.fetchAllTopics { [weak self] (result) in
-            switch result {
-            case .success(let response):
-                guard let response = response else { return }
-
-                self?.topicViewModels = response.topicList.topics.map({ TopicCellViewModel(topic: $0) })
-                self?.viewDelegate?.topicsFetched()
-            case .failure:
-                self?.viewDelegate?.errorFetchingTopics()
-            }
-        }
+        topicsDataManager.fetchAllTopics{ [weak self] result in
+                   guard let self = self else { return }
+                   
+                   switch result {
+                   case .success(let response):
+                    guard let response = response else {return}
+                    self.topicViewModels = response.topicList.topics.map({ topic in
+                        let user = response.users.first(where: { user -> Bool in
+                            return user.username == topic.lastPosterUsername
+                        })
+                        return TopicCellViewModel(topic: topic, userLastPoster: user ?? User(id: 0, username: "", name: "", avatarTemplate: ""))
+                    })
+                       self.viewDelegate?.topicsFetched()
+                       
+                   case .failure:
+                       self.viewDelegate?.errorFetchingTopics()
+                   }
+               }
     }
     
     func viewWasLoaded() {
